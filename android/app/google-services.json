@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "120157599815",
+    "project_id": "javacrud-902f2",
+    "storage_bucket": "javacrud-902f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120157599815:android:03486975c64934dacb5962",
+        "android_client_info": {
+          "package_name": "com.example.tasklyplatform"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDK_95DmAKLR2NoAbjootwBzNI-Jy4oSEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
