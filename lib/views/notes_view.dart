@@ -340,7 +340,7 @@ validator: (value) {
           
               child:  Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Expanded(child: Text( note.title,style: TextStyle(fontSize: _deviceWidth*0.06),)),Row(children: [deleteIcon(note),GestureDetector(
+                children: [Expanded(child: Text(note.title,style: TextStyle(fontSize: _deviceWidth*0.06),)),Row(children: [deleteIcon(note),GestureDetector(
                   
                   onTap: (){
                     GetIt.instance.get<NoteBodyModelView>().setNoteField(note);

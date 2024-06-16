@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tasklyplatform/models/TaskModel.dart';
 import 'package:tasklyplatform/modelviews/tasks_model_view.dart';
@@ -53,7 +54,7 @@ class TasksViewState extends State<TasksView>{
     child: Scaffold(
 
       body: SafeArea(child: Container(
-        padding: EdgeInsets.all(20),
+       
 
         height: _deviceHeight,
         width: _deviceWidth,
@@ -492,11 +493,14 @@ validator: (value) {
           return Center(child: CircularProgressIndicator(),);
         }
 
-        return ListView.builder(itemCount: value.length, itemBuilder: (BuildContext context,int index){
-
-
-          return TaskComponent(value[index]);
-        });
+        return Container(
+          padding: EdgeInsets.all(20),
+          child: ListView.builder(itemCount: value.length, itemBuilder: (BuildContext context,int index){
+          
+          
+            return TaskComponent(value[index]);
+          }),
+        );
 
 
 
@@ -506,35 +510,70 @@ validator: (value) {
 
     Widget TaskComponent(TaskModel task){
 
-      return Container(width: _deviceWidth,
-            child: Row(children: [Expanded(child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [Container(child: Text(task.title,style: TextStyle(fontSize: _deviceWidth*0.06),)),
-            
-            Container(child: Text("Start time:${task.start.toDate().toString()}",style: TextStyle(fontSize: _deviceWidth*0.06))),
-            Container(child: Text("End time:${task.end.toDate().toString()}",style: TextStyle(fontSize: _deviceWidth*0.06)))
-            ],)),
-            Row(children: [DropdownButton<String>(
-              value: task.completed? "completed":"uncompleted",
-              hint: task.isLoadingCompletedEdit?Center(child: CircularProgressIndicator(color: Colors.black,),):Text(task.completed? "completed":"uncompleted",),
-              items: [DropdownMenuItem(onTap: (){
-                GetIt.instance.get<TasksModelView>().updateTaskStatus(task, "completed");
+      return Container(
+        margin: EdgeInsets.only(bottom: 20),
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(border: Border.all(color: Colors.black,width: 1)), width: _deviceWidth,
+    
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+              
+              Container(
+                  
+                    child: Text("Title:"+task.title,style: TextStyle(fontSize: _deviceWidth*0.06),)),
+              
+              Container(child: Text("Start time:${formatDateTime(task.start.toDate())}",style: TextStyle(fontSize: _deviceWidth*0.06))),
+              Container(child: Text("End time:${formatDateTime(task.start.toDate())}",style: TextStyle(fontSize: _deviceWidth*0.06))),
+              
+                 DropdownButtonHideUnderline(child:        DropdownButton<String>(
+                          isExpanded: true,
 
-
-              }, value: "completed", child: Text("completed",style: TextStyle(fontSize: _deviceWidth*0.04))),
-            
-            DropdownMenuItem(onTap: (){
-
-               GetIt.instance.get<TasksModelView>().updateTaskStatus(task, "uncompleted");
-
-            }, value: "uncompleted", child: Text("uncompleted",style: TextStyle(fontSize: _deviceWidth*0.04)))
-            ], onChanged: (value){
-
-            })],)
-            ],),
-          );
+                          
+                          
+                value: task.completed? "completed":"uncompleted",
+                hint: task.isLoadingCompletedEdit?Center(child: CircularProgressIndicator(color: Colors.black,),):Text(task.completed? "completed":"uncompleted",),
+                items: [DropdownMenuItem( 
+                  
+                  onTap: (){
+                  GetIt.instance.get<TasksModelView>().updateTaskStatus(task, "completed");
+              
+              
+                }, value: "completed", child: Container(
+                  
+                  
+                  child: Container(
+                   
+                    height: double.infinity,
+                    width: double.infinity,
+                    color: Colors.green,
+                    
+                    child:Center(child:  Text( "completed",style: TextStyle(color: Colors.white, fontSize: _deviceWidth*0.04)))))),
+              
+              DropdownMenuItem( onTap: (){
+              
+                 GetIt.instance.get<TasksModelView>().updateTaskStatus(task, "uncompleted");
+              
+              }, value: "uncompleted", child: Container(
+                color: Colors.red,
+                 height: double.infinity,
+              width: double.infinity,
+               child: Center(child:Text("uncompleted",style: TextStyle(color: Colors.white, fontSize: _deviceWidth*0.04))) ))
+              ], onChanged: (value){
+              
+              }))
+              ]
+              ),
+              
+    
+              
+            );
+          
 
 
     }
+String formatDateTime(DateTime dateTime) {
+  return DateFormat('yyyy-MM-dd hh:mm a').format(dateTime);
+}
 
 }

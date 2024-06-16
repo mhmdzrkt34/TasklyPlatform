@@ -183,5 +183,16 @@ taskAddVisible=false;
     notifyListeners();
   }
 
+  TaskModel getTaskById(String id){
+
+
+    TaskModel task=tasks!.where((item)=>item.id==id).first;
+
+    return task;
+
+
+
+  }
+
 
 }

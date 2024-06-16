@@ -5,6 +5,8 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:tasklyplatform/models/TaskModel.dart';
 
 import 'package:tasklyplatform/modelviews/scheduale_model_view.dart';
+import 'package:tasklyplatform/modelviews/tasks_model_view.dart';
+import 'package:tasklyplatform/views/task_detail_view.dart';
 
 
 class SchedualeView extends StatefulWidget{
@@ -79,19 +81,55 @@ class SchedualeViewState extends State<SchedualeView>{
       return Center(child: CircularProgressIndicator(),);
     }
 
-    return SfCalendar(
+    return GestureDetector(
+      onDoubleTapDown: (TapDownDetails details){
+        print("hey");
+
+
+
+      },
+      child: SfCalendar(
 
         view: CalendarView.week,
         
       
-        dataSource: MeetingDataSource(tasks.map<Appointment>((item)=>( Appointment(startTime: item.start.toDate(), endTime: item.end.toDate(),subject: item.title,color: item.completed?Colors.green:Colors.red)
+        dataSource: MeetingDataSource(tasks.map<Appointment>((item)=>( Appointment( id: item.id, startTime: item.start.toDate(), endTime: item.end.toDate(),subject: item.title,color: item.completed?Colors.green:Colors.red)
         )).toList()
 
         
         ),
+        onTap: (CalendarTapDetails details){
+
+                if (details.targetElement == CalendarElement.appointment) {
+        final Appointment appointment = details.appointments!.first;
+
+  
 
 
-      );
+        TaskModel task=GetIt.instance.get<TasksModelView>().getTaskById(appointment.id.toString());
+        print(task.id);
+            Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TaskDetailView(
+          task: task,
+      
+        )));
+
+
+
+        
+
+
+        
+  
+      }
+
+
+        },
+
+
+      ));
   }
   
 }
